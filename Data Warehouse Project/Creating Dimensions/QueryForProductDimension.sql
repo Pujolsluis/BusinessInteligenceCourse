@@ -53,3 +53,6 @@ FROM Employees emp LEFT JOIN Employees AS E
 SELECT ShipperID, CompanyName 
 INTO [NorthwindDWH].dbo.DimShippers
 FROM Shippers
+
+------------------------------------------------------------------------
+
