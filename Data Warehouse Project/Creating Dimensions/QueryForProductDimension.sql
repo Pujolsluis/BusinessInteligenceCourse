@@ -57,10 +57,30 @@ FROM Shippers
 ------------------------------------------------------------------------
 
 SELECT 
-	OrderDate AS DATEKEY
-	,CustomerID
-	,EmployeeID
-	,ShipVia
-	,
+	ord.OrderDate AS DATEKEY
+	,ord.CustomerID
+	,ord.EmployeeID
+	,ord.ShipVia AS ShipperID
+	,ordDetails.ProductID
+	,ord.OrderID
+	,(ordDetails.UnitPrice * ordDetails.Quantity * (1 - ordDetails.Discount)) SubTotal
+	, ordDetails.Quantity
+	INTO [NorthwindDWH].dbo.FactOrders
+FROM Orders ord INNER JOIN [Order Details] ordDetails
+	ON ord.OrderID = ordDetails.OrderID
+
+------------------------------------------------------------------------
+
+SELECT DISTINCT OrderDate
+	,YEAR(OrderDate) AS 'YEAR'
+	,MONTH(OrderDate) AS 'Month'
+	,DATENAME(month, orderDate) AS 'MonthName'
+	,DATEPART(dw, OrderDate) AS 'DayOfWeek'
+	,DATENAME(dw, OrderDate) AS 'DayOfWeekName'
+	,DATEPART(Q, OrderDate) AS 'Quarter'
+	,CASE WHEN MONTH(OrderDate) < 7 THEN 'H1' ELSE 'H2' END AS 'Semester'
+	INTO [NorthwindDWH].dbo.DimDate
 FROM Orders
+
+------------------------------------------------------------------------
 
