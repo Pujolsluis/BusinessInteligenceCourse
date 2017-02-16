@@ -28,5 +28,28 @@ SELECT [CustomerID]
 	   ,[Region]
 	   ,[PostalCode]
 	   ,[Country]
-	   --INTO [NorthwindDWH].dbo.DimCustomers
+	   INTO [NorthwindDWH].dbo.DimCustomers
 	   FROM Customers
+
+------------------------------------------------------------------------
+
+SELECT emp.EmployeeID
+	   ,emp.LastName
+	   ,emp.FirstName
+	   ,emp.LastName + ' ' + emp.FirstName AS CompleteName
+	   ,emp.BirthDate
+	   ,emp.HireDate
+	   ,emp.City
+	   ,emp.Region
+	   ,emp.Country
+	   ,CAST(emp.ReportsTo AS VARCHAR(10)) AS ReportsTo
+	   ,ISNULL(E.LastName + ' ' + E.FirstName, 'None') AS ReportsToCompleteName
+	   INTO [NorthwindDWH].dbo.DimEmployees
+FROM Employees emp LEFT JOIN Employees AS E
+	 ON emp.ReportsTo = E.EmployeeID
+
+------------------------------------------------------------------------
+
+SELECT ShipperID, CompanyName 
+INTO [NorthwindDWH].dbo.DimShippers
+FROM Shippers
