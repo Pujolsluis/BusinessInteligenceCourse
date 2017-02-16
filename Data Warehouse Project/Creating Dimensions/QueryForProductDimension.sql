@@ -56,3 +56,11 @@ FROM Shippers
 
 ------------------------------------------------------------------------
 
+SELECT 
+	OrderDate AS DATEKEY
+	,CustomerID
+	,EmployeeID
+	,ShipVia
+	,
+FROM Orders
+
